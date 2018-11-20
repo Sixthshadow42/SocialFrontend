@@ -8,7 +8,8 @@ import { Redirect } from 'react-router-dom'
 interface IState {
     error: boolean,
     loading: boolean,
-    login: boolean
+    login: boolean,
+    registered: string
 }
 
 export default class Login extends React.Component<{}, IState> {
@@ -17,7 +18,8 @@ export default class Login extends React.Component<{}, IState> {
         this.state = {
             error: false,
             loading: false,
-            login: false
+            login: false,
+            registered: "false"
         }
         this.setLogin = this.setLogin.bind(this);
         this.register = this.register.bind(this);
@@ -26,7 +28,7 @@ export default class Login extends React.Component<{}, IState> {
     public render() {
         return (
             <div style={{ backgroundColor: '#eff2f7' }}>
-                <Grid container={true} md={12} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <Grid container={true} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                     <Grid item={true} md={6}>
                         <Card>
                             <CardContent>
@@ -84,8 +86,9 @@ export default class Login extends React.Component<{}, IState> {
             method: 'POST'
         }).then((response: any) => {
             if (!response.ok) {
-                this.setState({error: true, loading: false});
+                this.setState({error: true, loading: false, registered: "false"});
             } else if (response.ok) {
+                this.setState({registered: "true"});
                 this.setLogin(null);
             }
         });
@@ -93,7 +96,7 @@ export default class Login extends React.Component<{}, IState> {
 
     public login() {
         if (this.state.login) {
-            return <Redirect to={{pathname: "/login", state: {registered: "true"}}} />
+            return <Redirect to={{pathname: "/login", state: {registered: this.state.registered}}} />
         }
         return "";
     }
