@@ -6,6 +6,8 @@ import * as React from "react";
 import { Redirect } from 'react-router-dom'
 
 interface IState {
+    error: boolean,
+    loading: boolean,
     login: boolean,
     register: boolean
 }
@@ -14,6 +16,8 @@ export default class Login extends React.Component<{ location: any }, IState> {
     constructor(props: any) {
         super(props);
         this.state = {
+            error: false,
+            loading: false,
             login: false,
             register: false
         }
@@ -33,24 +37,25 @@ export default class Login extends React.Component<{ location: any }, IState> {
                                     <div>
                                         <FormControl>
                                             <InputLabel>Username</InputLabel>
-                                            <Input required={true} autoFocus={true} />
+                                            <Input name="username" required={true} autoFocus={true} />
                                         </FormControl>
                                     </div>
                                     <div style={{ marginTop: "10px" }}>
                                         <FormControl>
                                             <InputLabel>Password</InputLabel>
-                                            <Input required={true} type="password" />
+                                            <Input name="password" required={true} type="password" />
                                         </FormControl>
                                     </div>
                                     <div style={{ marginTop: "10px", width: "100%" }}>
                                         <FormControl style={{ width: "100%" }}>
-                                            <Button variant="contained" color="primary" type="submit" fullWidth={true}>Log In</Button>
+                                            <Button variant="contained" color="primary" type="submit" fullWidth={true} disabled={this.state.loading}>Log In</Button>
                                         </FormControl>
                                     </div>
                                 </form>
                                 <div style={{ marginTop: "10px", width: "100%" }}>
                                     <Button color="primary" fullWidth={true} onClick={this.setRegister}>Register</Button>
                                 </div>
+                                {this.checkError()}
                                 {this.registerSuccess()}
                             </CardContent>
                         </Card>
@@ -60,6 +65,16 @@ export default class Login extends React.Component<{ location: any }, IState> {
                 {this.login()}
             </div>
         );
+    }
+
+    public checkError() {
+        if (this.state.error){
+            return <div style={{ marginTop: "10px", width: "100%" }}>
+                <Typography align="center">Error, Try Again.</Typography>
+            </div>
+        }
+
+        return "";
     }
 
     public registerSuccess() {
@@ -83,7 +98,21 @@ export default class Login extends React.Component<{ location: any }, IState> {
 
     public authenticate(event: any) {
         event.preventDefault();
-        this.setState({ login: true });
+        this.setState({loading: true});
+        fetch("https://socialworkapi.azurewebsites.net/api/users/login", {
+            body: JSON.stringify({username: event.target.username.value, password: event.target.password.value}),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: 'POST'
+        }).then((response: any) => {
+            if (!response.ok) {
+                this.setState({error: true, loading: false});
+            } else if (response.ok) {
+                this.setState({login: true});
+            }
+        });
     }
 
     public login() {
