@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import App from './App'
-import Login from './components/Login';
-import Register from './components/Register';
+import { BrowserRouter, Redirect, Route } from 'react-router-dom';
+import App from './App';
 
 export const AppRouter: React.StatelessComponent<{}> = () => {
     return (
@@ -10,11 +8,9 @@ export const AppRouter: React.StatelessComponent<{}> = () => {
         <BrowserRouter>
             <div>
                 <main>
-                    <Switch>
-                        <Route path="/login" component={Login} />
-                        <Route exact={true} path="/index" component={App} />
-                        <Route exact={true} path="/register" component={Register} />
-                    </Switch>
+                    <Route path='/' component = {App} />
+                    <Redirect from='*' to='/' />
+
                 </main>
             </div>
         </BrowserRouter>

@@ -1,32 +1,31 @@
-import {
-    Button, Card, CardContent,
-    FormControl, Grid, Input, InputLabel, Typography
-} from '@material-ui/core';
+import { Card, CardContent, Grid, Typography } from '@material-ui/core';
 import * as React from "react";
-import { Redirect } from 'react-router-dom'
+import LoginContent from './LoginContent';
+import RegisterContent from './RegisterContent';
 
 interface IState {
     error: boolean,
     loading: boolean,
     login: boolean,
-    register: boolean
+    register: boolean,
+    registered: boolean,
 }
 
-export default class Login extends React.Component<{ location: any }, IState> {
+export default class Login extends React.Component<{ login: any }, IState> {
     constructor(props: any) {
         super(props);
         this.state = {
             error: false,
             loading: false,
             login: false,
-            register: false
+            register: false,
+            registered: false,
         }
-        this.authenticate = this.authenticate.bind(this);
         this.setRegister = this.setRegister.bind(this);
-    }
-
-    public componentDidMount(){
-        this.checkAuthenticated();
+        this.unsetRegister = this.unsetRegister.bind(this);
+        this.setRegistered = this.setRegistered.bind(this);
+        this.setError = this.setError.bind(this);
+        this.unsetError = this.unsetError.bind(this);
     }
 
     public render() {
@@ -36,114 +35,45 @@ export default class Login extends React.Component<{ location: any }, IState> {
                     <Grid item={true} md={6}>
                         <Card>
                             <CardContent>
-                                <Typography gutterBottom={true} align="center" variant="headline" component="h2">Login</Typography>
-                                <form onSubmitCapture={this.authenticate}>
-                                    <div>
-                                        <FormControl>
-                                            <InputLabel>Username</InputLabel>
-                                            <Input name="username" required={true} autoFocus={true} />
-                                        </FormControl>
-                                    </div>
-                                    <div style={{ marginTop: "10px" }}>
-                                        <FormControl>
-                                            <InputLabel>Password</InputLabel>
-                                            <Input autoComplete="current-password" name="password" required={true} type="password" />
-                                        </FormControl>
-                                    </div>
+                                {!this.state.register || this.state.registered ? <LoginContent beginRegister={this.setRegister} error={this.setError} unsetError={this.unsetError} setAuthToken={this.props.login} /> :
+                                    <RegisterContent login={this.unsetRegister} registerComplete={this.setRegistered} error={this.setError} unsetError={this.unsetError} />}
+
+                                {this.state.error ?
                                     <div style={{ marginTop: "10px", width: "100%" }}>
-                                        <FormControl style={{ width: "100%" }}>
-                                            <Button variant="contained" color="primary" type="submit" fullWidth={true} disabled={this.state.loading}>Log In</Button>
-                                        </FormControl>
-                                    </div>
-                                </form>
-                                <div style={{ marginTop: "10px", width: "100%" }}>
-                                    <Button color="primary" fullWidth={true} onClick={this.setRegister}>Register</Button>
-                                </div>
-                                {this.checkError()}
-                                {this.registerSuccess()}
+                                        <Typography align="center">Error, Try Again.</Typography>
+                                    </div> :
+                                    ""}
+
+                                {this.state.registered ?
+                                    <div style={{ marginTop: "10px", width: "100%" }}>
+                                        <Typography align="center">Successfully Registered!</Typography>
+                                    </div> :
+                                    ""}
                             </CardContent>
                         </Card>
                     </Grid>
                 </Grid>
-                {this.register()}
-                {this.login()}
             </div>
         );
     }
 
-    public checkError() {
-        if (this.state.error){
-            return <div style={{ marginTop: "10px", width: "100%" }}>
-                <Typography align="center">Error, Try Again.</Typography>
-            </div>
-        }
-
-        return "";
+    public setRegister() {
+        this.setState({ error: false, register: true });
     }
 
-    public registerSuccess() {
-        if (this.props.location != null) {
-            if (this.props.location.state != null) {
-                if (this.props.location.state.registered != null) {
-                    if (this.props.location.state.registered === "true") {
-                        return <div style={{ marginTop: "10px", width: "100%" }}>
-                            <Typography align="center">Successfully Registered!</Typography>
-                        </div>
-                    }
-                }
-            }
-        }
-        return "";
+    public unsetRegister() {
+        this.setState({ error: false, register: false });
     }
 
-    public setRegister(event: any) {
-        this.setState({ register: true });
+    public setRegistered() {
+        this.setState({ registered: true });
     }
 
-    public authenticate(event: any) {
-        event.preventDefault();
-        this.setState({loading: true});
-        fetch("https://socialworkapi.azurewebsites.net/api/users/login", {
-            body: JSON.stringify({username: event.target.username.value, password: event.target.password.value}),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: 'POST'
-        }).then((response: any) => {
-            if (!response.ok) {
-                this.setState({error: true, loading: false});
-            } else if (response.ok) {
-                this.setState({login: true});
-            }
-        });
+    public setError() {
+        this.setState({ error: true });
     }
 
-    public login() {
-        if (this.state.login) {
-            return <Redirect to="/index" />
-        }
-        return "";
-    }
-
-    public register() {
-        if (this.state.register) {
-            return <Redirect to="/register" />
-        }
-        return "";
-    }
-
-    public checkAuthenticated(){
-        fetch("https://socialworkapi.azurewebsites.net/api/users", {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: 'GET'
-        }).then((response: any) => {
-            if (response.ok) {
-                this.setState({login: true});
-            }
-        });
+    public unsetError() {
+        this.setState({ error: false });
     }
 }
