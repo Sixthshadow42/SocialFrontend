@@ -25,6 +25,11 @@ export default class Login extends React.Component<{ location: any }, IState> {
         this.setRegister = this.setRegister.bind(this);
     }
 
+    public componentDidMount(){
+        this.checkAuthenticated();
+        alert("test: "+this.state.login);
+    }
+
     public render() {
         return (
             <div style={{ backgroundColor: '#eff2f7' }}>
@@ -127,5 +132,20 @@ export default class Login extends React.Component<{ location: any }, IState> {
             return <Redirect to="/register" />
         }
         return "";
+    }
+
+    public checkAuthenticated(){
+        fetch("https://socialworkapi.azurewebsites.net/api/users", {
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: 'GET'
+        }).then((response: any) => {
+            if (response.ok) {
+                this.setState({login: true});
+            }
+        });
     }
 }
