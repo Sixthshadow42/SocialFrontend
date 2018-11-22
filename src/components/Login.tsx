@@ -27,7 +27,6 @@ export default class Login extends React.Component<{ location: any }, IState> {
 
     public componentDidMount(){
         this.checkAuthenticated();
-        alert("test: "+this.state.login);
     }
 
     public render() {
@@ -136,7 +135,6 @@ export default class Login extends React.Component<{ location: any }, IState> {
 
     public checkAuthenticated(){
         fetch("https://socialworkapi.azurewebsites.net/api/users", {
-            credentials: 'include',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
