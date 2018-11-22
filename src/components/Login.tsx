@@ -32,7 +32,7 @@ export default class Login extends React.Component<{ location: any }, IState> {
     public render() {
         return (
             <div style={{ backgroundColor: '#eff2f7' }}>
-                <Grid container={true} md={12} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <Grid container={true} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                     <Grid item={true} md={6}>
                         <Card>
                             <CardContent>
@@ -47,7 +47,7 @@ export default class Login extends React.Component<{ location: any }, IState> {
                                     <div style={{ marginTop: "10px" }}>
                                         <FormControl>
                                             <InputLabel>Password</InputLabel>
-                                            <Input name="password" required={true} type="password" />
+                                            <Input autoComplete="current-password" name="password" required={true} type="password" />
                                         </FormControl>
                                     </div>
                                     <div style={{ marginTop: "10px", width: "100%" }}>
