@@ -1,6 +1,7 @@
-import { AppBar, Grid, Icon, IconButton, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Avatar, Grid, Icon, IconButton, Toolbar, Typography } from '@material-ui/core';
 import * as React from "react";
 import Modal from 'react-responsive-modal';
+import Logo from '../logo.png'
 import TodoCard from './TodoCard';
 import TodoCreator from './TodoCreator';
 
@@ -31,13 +32,17 @@ export default class TodoPage extends React.Component<{ authToken: any }, IState
             <div>
                 <AppBar position="static">
                     <Toolbar>
-                        <Typography variant="h6" style={{color: "white"}}>
-                        WorkTodo
+                        <Typography variant="h6" style={{ color: "white" }}>
+                            WorkTodo
                         </Typography>
-                        <div style={{flexGrow: 1}} />
-                        <div style={{display: "flex"}}>
+                        <div style={{ flexGrow: 1 }} />
+                        <div style={{alignContent: "center"}}>
+                            <Avatar src={Logo} />
+                        </div>
+                        <div style={{ flexGrow: 1 }} />
+                        <div style={{ display: "flex" }}>
                             <IconButton onClick={this.createTodo}>
-                                    <Icon className={"fas fa-plus-circle"} style={{color: "white"}} />
+                                <Icon className={"fas fa-plus-circle"} style={{ color: "white" }} />
                             </IconButton>
                         </div>
                     </Toolbar>
@@ -45,9 +50,9 @@ export default class TodoPage extends React.Component<{ authToken: any }, IState
                 <Grid container={true} justify={'center'}>
                     <Grid item={true} xs={12}>
                         <Modal open={this.state.creating} showCloseIcon={false} center={true} onClose={this.doneCreateTodo}>
-                            <TodoCreator doneCreating={this.doneCreateTodo} authToken={this.props.authToken}/>
+                            <TodoCreator doneCreating={this.doneCreateTodo} authToken={this.props.authToken} />
                         </Modal>
-                        <Grid container={true} spacing={40} justify="center" style={{marginTop: "20px"}}>
+                        <Grid container={true} spacing={40} justify="center" style={{ marginTop: "20px" }}>
                             {this.createElements()}
                         </Grid>
                     </Grid>
@@ -70,9 +75,9 @@ export default class TodoPage extends React.Component<{ authToken: any }, IState
                 this.setState({ error: false, todoItems: {} });
                 response.json().then((body: any) => {
                     body.forEach((element: any, index: any) => {
-                        itemArray = [...itemArray, {'index': index, 'todoItem': element}]
+                        itemArray = [...itemArray, { 'index': index, 'todoItem': element }]
                     });
-                    this.setState({todoItems: itemArray});
+                    this.setState({ todoItems: itemArray });
                 })
             } else {
                 this.setState({ error: true });
@@ -80,18 +85,18 @@ export default class TodoPage extends React.Component<{ authToken: any }, IState
         });
     }
 
-    public createTodo(){
-        this.setState({creating: true});
+    public createTodo() {
+        this.setState({ creating: true });
     }
 
-    public doneCreateTodo(){
-        this.setState({creating: false});
+    public doneCreateTodo() {
+        this.setState({ creating: false });
         this.getTodoItems();
     }
 
     public createElements = () => {
         const itemArray: any = [];
-        for (let i = 0; i < this.state.todoItems.length; i++){
+        for (let i = 0; i < this.state.todoItems.length; i++) {
             itemArray.push(<TodoCard key={i} todoItem={this.state.todoItems[i].todoItem} authToken={this.props.authToken} doneDelete={this.doneCreateTodo} />)
         }
         return itemArray;

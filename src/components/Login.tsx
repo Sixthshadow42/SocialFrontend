@@ -1,5 +1,6 @@
-import { Card, CardContent, Grid, Typography } from '@material-ui/core';
+import { Card, CardContent, CardMedia, Grid, Typography } from '@material-ui/core';
 import * as React from "react";
+import Logo from '../logo.png'
 import LoginContent from './LoginContent';
 import RegisterContent from './RegisterContent';
 
@@ -34,6 +35,7 @@ export default class Login extends React.Component<{ login: any }, IState> {
                 <Grid container={true} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                     <Grid item={true} md={6}>
                         <Card>
+                            <CardMedia image={Logo} style={{height:"140px"}}/>
                             <CardContent>
                                 {!this.state.register || this.state.registered ? <LoginContent beginRegister={this.setRegister} error={this.setError} unsetError={this.unsetError} setAuthToken={this.props.login} /> :
                                     <RegisterContent login={this.unsetRegister} registerComplete={this.setRegistered} error={this.setError} unsetError={this.unsetError} />}
