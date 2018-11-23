@@ -20,10 +20,7 @@ steps:
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-    archiveFile: '$(System.DefaultWorkingDirectory)/build.zip' 
+    includeRootFolder: false
 
 
 - task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(System.DefaultWorkingDirectory)/build.zip' 
-    artifactName: 'build' 
