@@ -72,7 +72,7 @@ export default class TodoCard extends React.Component<{ todoItem: any, authToken
 
                             </Grid>
                             <Grid item={true} xs={12} style={{ marginTop: "10px" }}>
-                                <Button fullWidth={true} variant="contained" color="secondary" style={this.state.loading ? {} : { backgroundColor: "red" }} onClick={this.deleteItem} disabled={this.state.loading} >
+                                <Button fullWidth={true} variant="contained" color="secondary" style={this.state.loading ? {} : { backgroundColor: "#A80003" }} onClick={this.deleteItem} disabled={this.state.loading} >
                                     Delete
                                 </Button>
                             </Grid>
