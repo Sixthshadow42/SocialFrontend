@@ -44,7 +44,7 @@ export default class TodoCreator extends React.Component<{ doneCreating: any, au
                     </div>
                     <div style={{ marginTop: "10px" }}>
                         <FormControl>
-                            <InputLabel>Task</InputLabel>
+                            <InputLabel shrink={this.state.talking}>Task</InputLabel>
                             <Input id="task" fullWidth={true} name="task" onClick={this.talking} onFocus={this.talking} required={true} autoFocus={true} type="text" endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton aria-label="Turn on text to speech" onClick={this.voiceAddTasks}>
