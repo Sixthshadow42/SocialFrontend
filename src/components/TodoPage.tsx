@@ -1,8 +1,11 @@
 import { AppBar, Grid, Icon, IconButton, Toolbar, Typography } from '@material-ui/core';
 import * as React from "react";
+import Modal from 'react-responsive-modal';
 import TodoCard from './TodoCard';
+import TodoCreator from './TodoCreator';
 
 interface IState {
+    creating: boolean,
     error: boolean,
     todoItems: any
 }
@@ -11,9 +14,12 @@ export default class TodoPage extends React.Component<{ authToken: any }, IState
     constructor(props: any) {
         super(props)
         this.state = {
+            creating: false,
             error: false,
-            todoItems: {}
+            todoItems: []
         }
+        this.createTodo = this.createTodo.bind(this);
+        this.doneCreateTodo = this.doneCreateTodo.bind(this);
     }
 
     public componentDidMount() {
@@ -23,23 +29,26 @@ export default class TodoPage extends React.Component<{ authToken: any }, IState
     public render() {
         return (
             <div>
-                <AppBar>
+                <AppBar position="static">
                     <Toolbar>
                         <Typography variant="h6" style={{color: "white"}}>
                         WorkTodo
                         </Typography>
                         <div style={{flexGrow: 1}} />
                         <div style={{display: "flex"}}>
-                            <IconButton>
-                                    <Icon className={"fas fa-plus-circle"} style={{color: "white"}}/>
+                            <IconButton onClick={this.createTodo}>
+                                    <Icon className={"fas fa-plus-circle"} style={{color: "white"}} />
                             </IconButton>
                         </div>
                     </Toolbar>
                 </AppBar>
                 <Grid container={true} justify={'center'}>
                     <Grid item={true} xs={12}>
-                        <Grid container={true} spacing={40}>
-                            <TodoCard todoItem="" />
+                        <Modal open={this.state.creating} showCloseIcon={false} center={true} onClose={this.doneCreateTodo}>
+                            <TodoCreator doneCreating={this.doneCreateTodo} authToken={this.props.authToken}/>
+                        </Modal>
+                        <Grid container={true} spacing={40} justify="center" style={{marginTop: "20px"}}>
+                            {this.createElements()}
                         </Grid>
                     </Grid>
                 </Grid>
@@ -57,17 +66,34 @@ export default class TodoPage extends React.Component<{ authToken: any }, IState
             method: 'GET'
         }).then((response: any) => {
             if (response.ok) {
-                this.setState({ error: false });
+                let itemArray: any[] = [];
+                this.setState({ error: false, todoItems: {} });
                 response.json().then((body: any) => {
                     body.forEach((element: any, index: any) => {
-                        this.setState(prevState => ({
-                            todoItems: [...prevState.todoItems, { 'index': index, 'todoItem': element }]
-                        }))
+                        itemArray = [...itemArray, {'index': index, 'todoItem': element}]
                     });
+                    this.setState({todoItems: itemArray});
                 })
             } else {
                 this.setState({ error: true });
             }
         });
+    }
+
+    public createTodo(){
+        this.setState({creating: true});
+    }
+
+    public doneCreateTodo(){
+        this.setState({creating: false});
+        this.getTodoItems();
+    }
+
+    public createElements = () => {
+        const itemArray: any = [];
+        for (let i = 0; i < this.state.todoItems.length; i++){
+            itemArray.push(<TodoCard key={i} todoItem={this.state.todoItems[i].todoItem} authToken={this.props.authToken} doneDelete={this.doneCreateTodo} />)
+        }
+        return itemArray;
     }
 }

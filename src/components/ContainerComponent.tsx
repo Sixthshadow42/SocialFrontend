@@ -19,7 +19,7 @@ export default class ContainerComponent extends React.Component<{}, IState> {
 
     public render() {
         return (
-            <div>
+            <div style={{backgroundColor: "#c6cceb"}}>
                 {!this.state.loggedIn ? <Login login={this.setLoggedIn}/> : ""}
                 {this.state.loggedIn ? <TodoPage authToken={this.state.authToken}/> : ""}
             </div>

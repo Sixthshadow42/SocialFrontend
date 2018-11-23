@@ -30,7 +30,7 @@ export default class Login extends React.Component<{ login: any }, IState> {
 
     public render() {
         return (
-            <div style={{ backgroundColor: '#eff2f7' }}>
+            <div>
                 <Grid container={true} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                     <Grid item={true} md={6}>
                         <Card>
