@@ -1,4 +1,4 @@
-import {
+aimport {
     Button, Checkbox, FormControl, FormControlLabel, Icon, IconButton, Input, InputAdornment, InputLabel, Typography
 } from '@material-ui/core';
 import MediaStreamRecorder from 'msr';
