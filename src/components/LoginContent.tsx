@@ -51,7 +51,7 @@ export default class LoginContent extends React.Component<{beginRegister: any, e
     public authenticate(event: any) {
         event.preventDefault();
         this.setState({ loading: true });
-        fetch("https://socialworkapi3.azurewebsites.net/api/users/login", {
+        fetch("https://worktodoapi.azurewebsites.net/api/users/login", {
             body: JSON.stringify({ username: event.target.username.value, password: event.target.password.value }),
             headers: {
                 'Accept': 'application/json',

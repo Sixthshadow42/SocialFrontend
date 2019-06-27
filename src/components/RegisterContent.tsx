@@ -58,7 +58,7 @@ export default class RegisterContent extends React.Component<{ login: any, regis
         event.preventDefault();
         this.setState({loading: true});
         this.props.unsetError();
-        fetch("https://socialworkapi3.azurewebsites.net/api/users", {
+        fetch("https://worktodoapi.azurewebsites.net/api/users", {
             body: JSON.stringify({username: event.target.username.value, emailAddress: event.target.emailAddress.value, password: event.target.password.value}),
             headers: {
                 'Accept': 'application/json',

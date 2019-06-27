@@ -86,7 +86,7 @@ export default class TodoEditor extends React.Component<{ doneEdit: any, authTok
     public editItem(event: any) {
         event.preventDefault();
         this.setState({ error: false, loading: true })
-        fetch("https://socialworkapi3.azurewebsites.net/api/todoes/" + this.props.item.id, {
+        fetch("https://worktodoapi.azurewebsites.net/api/todoes/" + this.props.item.id, {
             body: JSON.stringify({ id: this.props.item.id, task: event.target.task.value, dueDate: event.target.due.value, complete: event.target.complete.checked }),
             headers: {
                 'Accept': 'application/json',

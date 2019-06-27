@@ -84,7 +84,7 @@ export default class TodoCreator extends React.Component<{ doneCreating: any, au
     public createTodo(event: any) {
         event.preventDefault();
         this.setState({ error: false, loading: true });
-        fetch("https://socialworkapi3.azurewebsites.net/api/todoes", {
+        fetch("https://worktodoapi.azurewebsites.net/api/todoes", {
             body: JSON.stringify({ task: event.target.task.value, dueDate: event.target.due.value, complete: event.target.complete.checked }),
             headers: {
                 'Accept': 'application/json',

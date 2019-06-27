@@ -102,7 +102,7 @@ export default class TodoCard extends React.Component<{ todoItem: any, authToken
 
     public deleteItem() {
         this.setState({ error: false, loading: true })
-        fetch("https://socialworkapi3.azurewebsites.net/api/todoes/" + this.props.todoItem.id, {
+        fetch("https://worktodoapi.azurewebsites.net/api/todoes/" + this.props.todoItem.id, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',

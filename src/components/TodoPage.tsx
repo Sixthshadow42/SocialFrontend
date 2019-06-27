@@ -99,7 +99,7 @@ export default class TodoPage extends React.Component<{ authToken: any }, IState
     }
 
     public getTodoItems() {
-        fetch("https://socialworkapi3.azurewebsites.net/api/todoes", {
+        fetch("https://worktodoapi.azurewebsites.net/api/todoes", {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
